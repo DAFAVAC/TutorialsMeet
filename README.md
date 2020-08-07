@@ -9,3 +9,10 @@ Debido a la pandemia actual las clases presenciales se las realiza de forma virt
 un control y administración adecuada de clases de refuerzo o tutorías personales en las clases que reciben los estudiantes del Yavirac, así 
 evitando que otros estudiantes externos o desconocidos interrumpan las clases o generen malestar en el entorno de aprendizaje, así la plataforma 
 permite que el docente y el alumno se  enfoquen en un tema para mejorar el entendimiento del contenido impartido.
+
+
+
+
+NOTA:
+Usar el archivo "secretos de usuario" para implementar las autenticaciones de facebook y google , junto con la confirmacion de correo , 
+agregar dentro del proyecto dicho contenido en el "secret.json".
