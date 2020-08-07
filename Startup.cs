@@ -12,6 +12,9 @@ using TutorialsMeet.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using TutorialsMeet.Services;
 
 namespace TutorialsMeet
 {
@@ -28,15 +31,32 @@ namespace TutorialsMeet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication()
+                .AddFacebook(option =>
+                {
+                    option.AppId = Configuration["App:FacebookClientId"];
+                    option.AppSecret = Configuration["App:FacebookClientSecret"];
+                }
+                 ).AddGoogle(inssert =>
+                 {
+                     inssert.ClientId = Configuration["App:GOOGLEClientId"];
+                     inssert.ClientSecret = Configuration["App:GOOGLEClientSecret"];
+                 }
+                 );
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
             services.AddDbContext<PrincipalContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PrincipalContext")));
+                    options.UseNpgsql(Configuration.GetConnectionString("PrincipalContext")));
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,5 +89,8 @@ namespace TutorialsMeet
                 endpoints.MapRazorPages();
             });
         }
+    
+        
+
     }
 }
